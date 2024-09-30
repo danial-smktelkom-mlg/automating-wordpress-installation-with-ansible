@@ -1,14 +1,20 @@
+
+Here’s the updated **Job Sheet** with the additional tasks for copying and configuring `wp-config.php`. The new tasks are integrated into the module as part of the **WordPress Configuration** section.
+
+---
+
 ### **Job Sheet: Automating WordPress Installation with Ansible**
 
 ---
 
 #### **Objective:**
-This job sheet aims to help you:
-1. Gradually set up inventory files and playbooks.
-2. Install Apache, MySQL, and PHP on a remote server using Ansible.
-3. Manage MySQL databases and users automatically.
-4. Configure WordPress using dynamic templates.
-5. Reinforce your understanding through multiple exercises for each step before the final practice.
+This job sheet will guide you through:
+1. Setting up an inventory file and playbook.
+2. Installing Apache, MySQL, and PHP.
+3. Managing MySQL databases and users.
+4. Installing and configuring WordPress automatically.
+5. Configuring `wp-config.php` from a sample file.
+6. Reinforcing understanding through repeated exercises for each key step.
 
 ---
 
@@ -16,22 +22,22 @@ This job sheet aims to help you:
 
 #### **Exercise 1.1: Creating the Inventory File**
 
-Create an inventory file named `inventory.ini` in your project directory:
+Create an inventory file named `inventory.ini`:
 ```ini
 [wordpress]
 your_host_ip ansible_user=ubuntu ansible_ssh_private_key_file=/path/to/private/key.pem
 ```
-- **Objective**: Define the remote server’s IP, host user, and SSH key.
-- **Additional Exercise**: Try modifying the IP or SSH key file path to a different server, if available.
+- **Objective**: Define the server’s IP, host user, and SSH key.
+- **Additional Exercise**: Modify the file to connect to a different server, if available.
 
 #### **Exercise 1.2: Testing Ansible Connectivity**
 
-Verify the Ansible connection to the remote server:
+Verify the Ansible connection:
 ```bash
 ansible -i inventory.ini wordpress -m ping
 ```
 - **Objective**: Ensure Ansible can connect to the server.
-- **Additional Exercise**: Try using a different inventory file or modifying connection parameters.
+- **Additional Exercise**: Use a different inventory or modify the connection parameters.
 
 ---
 
@@ -39,7 +45,7 @@ ansible -i inventory.ini wordpress -m ping
 
 #### **Exercise 2.1: Basic Playbook Setup**
 
-Create a basic playbook named `playbook.yml`:
+Create a playbook named `playbook.yml`:
 ```yaml
 - hosts: wordpress
   become: yes
@@ -49,12 +55,8 @@ Create a basic playbook named `playbook.yml`:
       apt:
         update_cache: yes
 ```
-- **Objective**: Start with a basic task of updating the package repository.
-- **Additional Exercise**: Add a task to install a simple package like `curl` and run the playbook.
-
-```bash
-ansible-playbook -i inventory.ini playbook.yml
-```
+- **Objective**: Start with updating the package repository.
+- **Additional Exercise**: Add a task to install a simple package like `curl`.
 
 #### **Exercise 2.2: Installing Apache**
 
@@ -66,7 +68,7 @@ Extend the playbook to install Apache:
         state: present
 ```
 - **Objective**: Automate Apache installation.
-- **Additional Exercise**: Verify that Apache is installed by running `apache2 -v` on the server.
+- **Additional Exercise**: Verify that Apache is installed by running `apache2 -v`.
 
 ---
 
@@ -74,7 +76,7 @@ Extend the playbook to install Apache:
 
 #### **Exercise 3.1: Installing MySQL and PHP**
 
-Extend your playbook to include MySQL and PHP:
+Extend the playbook to include MySQL and PHP:
 ```yaml
     - name: Install MySQL and PHP
       apt:
@@ -85,19 +87,19 @@ Extend your playbook to include MySQL and PHP:
         state: present
 ```
 - **Objective**: Automate the installation of MySQL and PHP.
-- **Additional Exercise**: Check their versions using `mysql --version` and `php --version`.
+- **Additional Exercise**: Check the versions using `mysql --version` and `php --version`.
 
 #### **Exercise 3.2: Installing Python Dependencies for MySQL**
 
-Ensure that the necessary Python dependencies for MySQL management are installed:
+Install Python dependencies for MySQL:
 ```yaml
     - name: Install Python MySQL dependencies
       apt:
         name: python3-pymysql
         state: present
 ```
-- **Objective**: Install `python3-pymysql` to enable Ansible’s MySQL module.
-- **Additional Exercise**: Verify the installation using `pip show pymysql` on the server.
+- **Objective**: Ensure MySQL management modules work in Ansible.
+- **Additional Exercise**: Verify by running `pip show pymysql`.
 
 ---
 
@@ -105,7 +107,7 @@ Ensure that the necessary Python dependencies for MySQL management are installed
 
 #### **Exercise 4.1: Create MySQL Admin User**
 
-Add this task to create an admin user with full privileges:
+Create a MySQL admin user:
 ```yaml
     - name: Create MySQL admin user
       mysql_user:
@@ -116,12 +118,12 @@ Add this task to create an admin user with full privileges:
         state: present
         login_unix_socket: /var/run/mysqld/mysqld.sock
 ```
-- **Objective**: Create a MySQL admin user with permissions from any host (`%`).
-- **Additional Exercise**: Check if the user was created by logging into MySQL and running `SELECT User FROM mysql.user;`.
+- **Objective**: Automate the creation of an admin user for MySQL.
+- **Additional Exercise**: Verify by logging into MySQL and running `SELECT User FROM mysql.user;`.
 
 #### **Exercise 4.2: Create WordPress Database**
 
-Update the task to create the WordPress database with login credentials:
+Create the WordPress database:
 ```yaml
     - name: Create WordPress database
       mysql_db:
@@ -130,8 +132,8 @@ Update the task to create the WordPress database with login credentials:
         login_user: wordpress
         login_password: wordpress
 ```
-- **Objective**: Use the MySQL user created earlier to manage the database.
-- **Additional Exercise**: Verify the database creation by running `SHOW DATABASES;`.
+- **Objective**: Automate database creation.
+- **Additional Exercise**: Verify by running `SHOW DATABASES;`.
 
 ---
 
@@ -152,30 +154,52 @@ Extend the playbook to download and extract WordPress:
         dest: /var/www/
         remote_src: yes
 ```
-- **Objective**: Automate the download and extraction of WordPress.
-- **Additional Exercise**: Verify that WordPress was extracted to `/var/www/wordpress`.
-
-#### **Exercise 5.2: Configuring wp-config.php**
-
-Use dynamic templates to configure `wp-config.php`:
-1. Create the `wp-config.php.j2` file with the necessary variables.
-2. Add this task to your playbook:
-```yaml
-    - name: Configure WordPress (wp-config.php)
-      template:
-        src: wp-config.php.j2
-        dest: /var/www/wordpress/wp-config.php
-```
-- **Objective**: Dynamically configure WordPress settings using Jinja2 templates.
-- **Additional Exercise**: Check the contents of `/var/www/wordpress/wp-config.php` to confirm that the variables have been replaced.
+- **Objective**: Automate downloading and extracting WordPress.
+- **Additional Exercise**: Verify by checking if WordPress was extracted to `/var/www/wordpress`.
 
 ---
 
-### **Step 6: Apache Configuration**
+### **Step 6: WordPress Configuration**
 
-#### **Exercise 6.1: Set Apache VirtualHost for WordPress**
+#### **Exercise 6.1: Copy and Configure wp-config.php**
 
-Update the Apache configuration to point to the WordPress directory:
+##### **Step 6.1.1: Copy wp-config-sample.php**
+
+Add a task to copy the sample configuration file:
+```yaml
+    - name: Copy wp-config-sample.php to wp-config.php
+      command: cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+      args:
+        creates: /var/www/html/wordpress/wp-config.php
+```
+- **Objective**: Copy the sample WordPress configuration file.
+- **Additional Exercise**: Check if `wp-config.php` exists after running the playbook.
+
+##### **Step 6.1.2: Configure wp-config.php**
+
+Use the `lineinfile` module to dynamically configure the WordPress database settings:
+```yaml
+    - name: Configure wp-config.php
+      lineinfile:
+        path: /var/www/html/wordpress/wp-config.php
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: "DB_NAME", line: "define('DB_NAME', 'wordpress_db');" }
+        - { regexp: "DB_USER", line: "define('DB_USER', 'wordpress');" }
+        - { regexp: "DB_PASSWORD", line: "define('DB_PASSWORD', 'wordpress');" }
+        - { regexp: "DB_HOST", line: "define('DB_HOST', 'localhost');" }
+```
+- **Objective**: Replace the database settings in `wp-config.php`.
+- **Additional Exercise**: Manually check the file to ensure the changes were made.
+
+---
+
+### **Step 7: Apache Configuration**
+
+#### **Exercise 7.1: Configure Apache VirtualHost**
+
+Update Apache configuration for WordPress:
 ```yaml
     - name: Update Apache VirtualHost for WordPress
       replace:
@@ -183,18 +207,26 @@ Update the Apache configuration to point to the WordPress directory:
         regexp: 'DocumentRoot /var/www/html'
         replace: 'DocumentRoot /var/www/wordpress'
 ```
-- **Objective**: Automate the configuration of Apache to serve WordPress.
-- **Additional Exercise**: Verify that the Apache configuration is working by opening the server’s IP address in a browser. The WordPress installation page should appear.
+- **Objective**: Automate Apache VirtualHost configuration for WordPress.
+- **Additional Exercise**: Open the server IP in a browser to verify that WordPress is accessible.
 
 ---
 
-### **Final Practice**
+### **Final Practice: Full Playbook Execution**
 
-#### **Practice: Running the Full Playbook**
-
-Combine all tasks into a single file named `wordpress-install.yml` and run the playbook:
+Combine all tasks into a full playbook and run:
 ```bash
-ansible-playbook -i inventory.ini wordpress-install.yml
+ansible-playbook -i inventory.ini playbook.yml
 ```
-- **Objective**: Automate the entire WordPress installation process from start to finish.
-- **Observation**: After running the playbook, WordPress should be fully installed and accessible via a browser.
+- **Objective**: Automate the full WordPress installation and configuration process.
+- **Observation**: After running the playbook, WordPress should be fully installed and configured.
+
+---
+
+### **Summary**
+
+This updated job sheet reflects all adjustments, including the creation and configuration of `wp-config.php`, and enhances your understanding of automating WordPress installation using Ansible. Each section provides multiple exercises to deepen your hands-on experience.
+
+--- 
+
+This updated job sheet should now meet your requirements and incorporate all the recent improvements!
