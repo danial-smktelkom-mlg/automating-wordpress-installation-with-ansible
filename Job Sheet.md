@@ -3,13 +3,13 @@
 ---
 
 #### **Objective:**
-This job sheet will guide you through:
+This job sheet will guide you through the process of:
 1. Setting up an inventory file and playbook.
 2. Installing Apache, MySQL, and PHP.
 3. Managing MySQL databases and users.
-4. Installing and configuring WordPress automatically.
+4. Automatically installing and configuring WordPress.
 5. Configuring `wp-config.php` from a sample file.
-6. Reinforcing understanding through repeated exercises for each key step.
+6. Reinforcing your understanding through repeated exercises for each key step.
 
 ---
 
@@ -17,7 +17,7 @@ This job sheet will guide you through:
 
 #### **Exercise 1.1: Creating the Inventory File**
 
-Create an inventory file named `inventory.ini`:
+Create an inventory file named `inventory.ini` with the following content:
 ```ini
 [wordpress]
 your_host_ip ansible_user=ubuntu ansible_ssh_private_key_file=/path/to/private/key.pem
@@ -27,7 +27,7 @@ your_host_ip ansible_user=ubuntu ansible_ssh_private_key_file=/path/to/private/k
 
 #### **Exercise 1.2: Testing Ansible Connectivity**
 
-Verify the Ansible connection:
+Verify the Ansible connection using the command:
 ```bash
 ansible -i inventory.ini wordpress -m ping
 ```
@@ -62,7 +62,7 @@ Extend the playbook to install Apache:
         name: apache2
         state: present
 ```
-- **Objective**: Automate Apache installation.
+- **Objective**: Automate the installation of Apache.
 - **Additional Exercise**: Verify that Apache is installed by running `apache2 -v`.
 
 ---
@@ -224,15 +224,23 @@ Add tasks to enable the new site configuration and restart Apache:
 
 ### **Final Practice: Full Playbook Execution**
 
-Combine all tasks into a full playbook and run:
+To execute the full automation, combine all tasks and run:
 ```bash
 ansible-playbook -i inventory.ini playbook.yml
 ```
-- **Objective**: Automate the full WordPress installation and configuration process.
+- **Objective**: Automate the complete WordPress installation and configuration process.
 - **Observation**: After running the playbook, WordPress should be fully installed and configured.
 
 ---
 
 ### **Summary**
 
-This updated job sheet reflects all adjustments, including the creation and configuration of `wp-config.php`, and enhances your understanding of automating WordPress installation using Ansible. Each section provides multiple exercises to deepen your hands-on experience.
+This job sheet provides a comprehensive guide for automating WordPress installation using Ansible. Each section is designed to build your understanding through practical exercises, ensuring you gain hands-on experience. Review the objectives and complete the additional exercises to enhance your learning further.
+
+---
+
+### **Additional Recommendations:**
+
+- Ensure that you have all necessary permissions to execute the tasks outlined in this job sheet.
+- Familiarize yourself with Ansible documentation for any specific commands or modules you may not understand.
+- Backup any existing configurations before making changes to your server.
