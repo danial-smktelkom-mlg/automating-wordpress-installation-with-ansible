@@ -1,8 +1,3 @@
-
-Here’s the updated **Job Sheet** with the additional tasks for copying and configuring `wp-config.php`. The new tasks are integrated into the module as part of the **WordPress Configuration** section.
-
----
-
 ### **Job Sheet: Automating WordPress Installation with Ansible**
 
 ---
@@ -226,7 +221,3 @@ ansible-playbook -i inventory.ini playbook.yml
 ### **Summary**
 
 This updated job sheet reflects all adjustments, including the creation and configuration of `wp-config.php`, and enhances your understanding of automating WordPress installation using Ansible. Each section provides multiple exercises to deepen your hands-on experience.
-
---- 
-
-This updated job sheet should now meet your requirements and incorporate all the recent improvements!
