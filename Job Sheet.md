@@ -163,9 +163,9 @@ Extend the playbook to download and extract WordPress:
 Add a task to copy the sample configuration file:
 ```yaml
     - name: Copy wp-config-sample.php to wp-config.php
-      command: cp /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+      command: cp /var/www/wordpress/wp-config-sample.php /var/www/wordpress/wp-config.php
       args:
-        creates: /var/www/html/wordpress/wp-config.php
+        creates: /var/www/wordpress/wp-config.php
 ```
 - **Objective**: Copy the sample WordPress configuration file.
 - **Additional Exercise**: Check if `wp-config.php` exists after running the playbook.
@@ -176,7 +176,7 @@ Use the `lineinfile` module to dynamically configure the WordPress database sett
 ```yaml
     - name: Configure wp-config.php
       lineinfile:
-        path: /var/www/html/wordpress/wp-config.php
+        path: /var/www/wordpress/wp-config.php
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       loop:
@@ -204,6 +204,21 @@ Update Apache configuration for WordPress:
 ```
 - **Objective**: Automate Apache VirtualHost configuration for WordPress.
 - **Additional Exercise**: Open the server IP in a browser to verify that WordPress is accessible.
+
+#### **Exercise 7.2: Enable Site Configuration and Restart Apache**
+
+Add tasks to enable the new site configuration and restart Apache:
+```yaml
+    - name: Enable the new site configuration
+      command: a2ensite 000-default.conf
+
+    - name: Restart Apache to apply changes
+      service:
+        name: apache2
+        state: restarted
+```
+- **Objective**: Enable the new site configuration and restart Apache.
+- **Additional Exercise**: Ensure that Apache is running by checking its status.
 
 ---
 
