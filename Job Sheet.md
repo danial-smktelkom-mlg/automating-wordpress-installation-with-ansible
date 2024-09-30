@@ -20,7 +20,7 @@ This job sheet will guide you through the process of:
 Create an inventory file named `inventory.ini` with the following content:
 ```ini
 [wordpress]
-your_host_ip ansible_user=ubuntu ansible_ssh_private_key_file=/path/to/private/key.pem
+your_host_ip ansible_user=your_host_user ansible_ssh_private_key_file=/path/to/private/key.pem
 ```
 - **Objective**: Define the server’s IP, host user, and SSH key.
 - **Additional Exercise**: Modify the file to connect to a different server, if available.
@@ -106,8 +106,8 @@ Create a MySQL admin user:
 ```yaml
     - name: Create MySQL admin user
       mysql_user:
-        name: wordpress
-        password: wordpress
+        name: mysql_admin_user
+        password: mysql_admin_password
         priv: "*.*:ALL,GRANT"
         host: "%"
         state: present
@@ -122,10 +122,10 @@ Create the WordPress database:
 ```yaml
     - name: Create WordPress database
       mysql_db:
-        name: wordpress_db
+        name: wordpress_db_name
         state: present
-        login_user: wordpress
-        login_password: wordpress
+        login_user: mysql_admin_user
+        login_password: mysql_admin_password
 ```
 - **Objective**: Automate database creation.
 - **Additional Exercise**: Verify by running `SHOW DATABASES;`.
@@ -180,9 +180,9 @@ Use the `lineinfile` module to dynamically configure the WordPress database sett
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       loop:
-        - { regexp: "DB_NAME", line: "define('DB_NAME', 'wordpress_db');" }
-        - { regexp: "DB_USER", line: "define('DB_USER', 'wordpress');" }
-        - { regexp: "DB_PASSWORD", line: "define('DB_PASSWORD', 'wordpress');" }
+        - { regexp: "DB_NAME", line: "define('DB_NAME', 'wordpress_db_name');" }
+        - { regexp: "DB_USER", line: "define('DB_USER', 'mysql_admin_user');" }
+        - { regexp: "DB_PASSWORD", line: "define('DB_PASSWORD', 'mysql_admin_password');" }
         - { regexp: "DB_HOST", line: "define('DB_HOST', 'localhost');" }
 ```
 - **Objective**: Replace the database settings in `wp-config.php`.
