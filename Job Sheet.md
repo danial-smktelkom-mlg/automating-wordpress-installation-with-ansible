@@ -1,6 +1,4 @@
 
----
-
 ### **Job Sheet: Automating WordPress Installation with Ansible**
 
 ---
@@ -246,4 +244,3 @@ Through this job sheet, you will learn to:
 3. **Observation**:
    - All tasks should complete successfully, and WordPress should be accessible via the browser.
 
----
